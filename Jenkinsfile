@@ -34,7 +34,6 @@ pipeline {
     stage('Docker Image'){
         steps{
             sh '''
-            cd sm-petclinic
             sudo docker build -t raghavendradurgampudi/spring-petclinic .
              '''
            }
