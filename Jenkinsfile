@@ -17,7 +17,7 @@ pipeline {
       stage('Build Project') {
          steps {
             sh '''
-            echo 'cd shopizer'
+            echo 'cd spring-petclinic'
             mvn clean install
             '''
          }
@@ -34,7 +34,7 @@ pipeline {
     stage('Docker Image'){
         steps{
             sh '''
-            cd sm-shop
+            cd sm-petclinic
             sudo docker build -t raghavendradurgampudi/spring-petclinic .
              '''
            }
@@ -62,11 +62,8 @@ pipeline {
             steps{
                    sh 'AWS Connection and Deployment'
                    sshagent(['AWS_Deployment_Server']) {
-                   sh "ssh -o StrictHostKeyChecking=no ubuntu@34.207.233.199 sudo docker-compose up -d"
-                   /** 
-                   sh "ssh -o StrictHostKeyChecking=no ubuntu@34.207.233.199 sudo kubectl apply -f <filename> "
-                   **/
-                   }
+                   sh "ssh -o StrictHostKeyChecking=no ubuntu@54.84.13.62 sudo docker-compose up -d"
+                 }
             }
         }
         
