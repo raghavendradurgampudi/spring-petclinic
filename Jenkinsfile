@@ -6,6 +6,8 @@ pipeline {
          git 'https://github.com/raghavendradurgampudi/spring-petclinic.git'
        }
     }
+          
+   
    stage("Build") {
      steps { 
         bat ''' 
