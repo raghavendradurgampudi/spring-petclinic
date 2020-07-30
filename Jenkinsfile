@@ -57,4 +57,4 @@ pipeline {
                 subject: "Jenkins Build :- ${currentBuild.currentResult}: Job ${env.JOB_NAME}"
                 }
         }
-    }
+}
