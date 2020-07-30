@@ -1,17 +1,21 @@
 pipeline {
  agent any
-   stage("Build") {
-     steps { 
-        bat ''' 
-    	    mvn install -DskipTests=true
-	        // mvn clean install
-           '''
-         }
-      }
+   
+        
+        
+       
+        stage("Build") {
+        steps { 
+                bat ''' 
+           	        mvn install -DskipTests=true
+	                // mvn clean install
+                   '''
+                }
+        }
 
 
 
-   stage('Approval') {
+        stage('Approval') {
             // no agent, so executors are not used up when waiting for approvals
             agent none
             steps {
@@ -22,36 +26,35 @@ pipeline {
             }
         }
 	
-    stage('Build images') {
-	  steps {
+        stage('Build images') {
+	   steps {
 		bat '''
 		  docker build -f "Dockerfile" -t raghavendradurgampudi/spring-petclinic:latest.
 		'''
 	      }
-       }
+        }
    
-     stage('Push Docker image') {
+        stage('Push Docker image') {
 	  steps{
 		    withDockerRegistry([ credentialsId: "Docker_Hub", url: "" ]){
 			bat "docker push raghavendradurgampudi/spring-petclinic:latest"   
 	  	   }
 	   }
-       } 
-       stage('Deploy On Aws'){
+        } 
+        stage('Deploy On Aws'){
 	       steps{
 			sshagent(['dev-server']) {
 			bat "ssh -o StrictHostKeyChecking=no ec2-user@3.85.1.232 sudo dokcer run raghavendradurgampudi/spring-petclinic:latest"
 			}
-	   	}
-   } 
- }
+	   	     }
+                   } 
+        }
 	post {
         always {          
             emailext attachLog: true,
                 body: "${currentBuild.currentResult}: Job ${env.JOB_NAME} build ${env.BUILD_NUMBER}\n More info at: ${env.BUILD_URL}",
                 recipientProviders: [developers(), requestor()],
                 subject: "Jenkins Build :- ${currentBuild.currentResult}: Job ${env.JOB_NAME}"
-            
+                }
         }
     }
-
