@@ -47,8 +47,8 @@ pipeline {
 			bat "ssh -o StrictHostKeyChecking=no ec2-user@3.85.1.232 sudo dokcer run raghavendradurgampudi/spring-petclinic:latest"
 			}
 	   	     }
-                   } 
         }
+}
 	post {
         always {          
             emailext attachLog: true,
@@ -57,4 +57,5 @@ pipeline {
                 subject: "Jenkins Build :- ${currentBuild.currentResult}: Job ${env.JOB_NAME}"
                 }
         }
+}
 }
