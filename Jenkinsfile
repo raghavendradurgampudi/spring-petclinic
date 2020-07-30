@@ -31,8 +31,7 @@ pipeline {
     stage('Build images') {
 	  steps {
 		bat '''
-			  cd sm-shop
-			  docker build -f "Dockerfile" -t raghavendradurgampudi/spring-petclinic:latest.
+		  docker build -f "Dockerfile" -t raghavendradurgampudi/spring-petclinic:latest.
 		'''
 	      }
        }
